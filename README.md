@@ -21,7 +21,7 @@ Standalone MCP server exposing a BM25 keyword search over a documentation folder
 ```bash
 uv run bm25-mcp                                  # http://localhost:8001/mcp
 MCP_TRANSPORT=stdio uv run bm25-mcp              # for a local MCP client
-uv run pytest
+uv run poe serve                                 # same as uv run bm25-mcp
 ```
 # Initialisation des hooks Git
 Pour initialiser les hooks, executez la commande suivante :
@@ -29,3 +29,15 @@ Pour initialiser les hooks, executez la commande suivante :
 git config core.hooksPath "git-hooks"
 ```
 
+
+## Développement
+
+Les tâches sont lancées avec [Poe the Poet](https://poethepoet.natn.io/) via uv (`uv run poe --help` les liste) :
+
+| Commande | Description |
+|---|---|
+| `uv run poe test` | Lance la suite de tests (pytest) |
+| `uv run poe serve` | Démarre le serveur MCP BM25 (configuration via `.env`) |
+| `uv run poe check` | Enchaîne toutes les vérifications (aujourd'hui : `test`) ; appelée par le hook `pre-push` |
+
+Les tâches `lint`, `typecheck`, `cov` ou `ingest` n'existent pas : le dépôt n'a ni ruff, ni mypy, ni pytest-cov, ni étape d'ingestion (l'index BM25 suit les fichiers sur disque). Ajoutez-les à `[tool.poe.tasks]` et à la séquence `check` le jour où l'outil est installé.
