@@ -29,3 +29,8 @@ packages = ["src/bm25_mcp"]
 [tool.pytest.ini_options]
 testpaths = ["tests"]
 pythonpath = ["src"]
+
+[tool.poe.tasks]
+test = { cmd = "pytest", help = "Run the test suite" }
+serve = { cmd = "bm25-mcp", help = "Start the BM25 MCP server (see .env)" }
+check = { sequence = ["test"], help = "Run every check (used by the pre-push hook)" }
