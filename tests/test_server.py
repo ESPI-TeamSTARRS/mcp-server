@@ -1,5 +1,7 @@
 import asyncio
 
+from starlette.testclient import TestClient
+
 from bm25_mcp.config import settings
 from bm25_mcp.server import MAX_LIMIT, build_server, main
 
@@ -38,6 +40,12 @@ def test_limit_is_capped_and_floored(tmp_path):
     docs = make_docs(tmp_path, MAX_LIMIT + 5)
     assert len(call_search(docs, query="redis", limit=1000)) == MAX_LIMIT
     assert len(call_search(docs, query="redis", limit=0)) == 1
+
+
+def test_health_endpoint_returns_ok(tmp_path):
+    app = build_server(tmp_path).streamable_http_app()
+    response = TestClient(app).get("/health")
+    assert response.status_code == 200 and response.json() == {"status": "ok"}
 
 
 def test_main_rejects_missing_docs_folder(monkeypatch, tmp_path, capsys):

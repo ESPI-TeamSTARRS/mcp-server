@@ -22,6 +22,7 @@ Standalone MCP server exposing a BM25 keyword search over a documentation folder
 uv run bm25-mcp                                  # http://localhost:8001/mcp
 MCP_TRANSPORT=stdio uv run bm25-mcp              # for a local MCP client
 uv run poe serve                                 # same as uv run bm25-mcp
+curl http://localhost:8001/health                # {"status":"ok"} (HTTP transports only)
 ```
 # Initialisation des hooks Git
 Pour initialiser les hooks, executez la commande suivante :

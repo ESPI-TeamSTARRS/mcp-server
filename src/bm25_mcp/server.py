@@ -2,6 +2,8 @@ import sys
 from pathlib import Path
 
 from mcp.server.fastmcp import FastMCP
+from starlette.requests import Request
+from starlette.responses import JSONResponse
 
 from bm25_mcp.config import settings
 from bm25_mcp.logger import logger
@@ -32,6 +34,10 @@ def build_server(docs_path: Path, host: str = "0.0.0.0", port: int = 8001) -> Fa
             + ", ".join(f"{hit.path} ({hit.score:.3f})" for hit in hits)
         )
         return [{"path": hit.path, "text": hit.text, "score": hit.score} for hit in hits]
+
+    @mcp.custom_route("/health", methods=["GET"])
+    async def health(_request: Request) -> JSONResponse:
+        return JSONResponse({"status": "ok"})
 
     return mcp
 
