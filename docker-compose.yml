@@ -1,0 +1,9 @@
+services:
+  bm25-mcp:
+    build: .
+    ports:
+      - "8001:8001"
+    environment:
+      DOCS_PATH: /app/documentations
+    volumes:
+      - ${DOCS_PATH:-../Chatbot-Rag/documentations}:/app/documentations:ro
