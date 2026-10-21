@@ -34,3 +34,7 @@ pythonpath = ["src"]
 test = { cmd = "pytest", help = "Run the test suite" }
 serve = { cmd = "bm25-mcp", help = "Start the BM25 MCP server (see .env)" }
 check = { sequence = ["test"], help = "Run every check (used by the pre-push hook)" }
+
+[tool.semantic_release]
+tag_format = "v{version}"
+version_toml = ["pyproject.toml:project.version"]
