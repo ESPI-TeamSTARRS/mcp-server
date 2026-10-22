@@ -2,8 +2,8 @@
   "schema": 1,
   "services": {
     "app": {
-      "image": "ghcr.io/espi-teamstarrs/mcp-server",
-      "version": "0.0.0"
+      "version": "0.3.0",
+      "image": "ghcr.io/espi-teamstarrs/mcp-server@sha256:4aa510a43e4bcd358478aedd50e0539f814db881cc78a3d33e8011a5c0962144"
     }
   }
 }
