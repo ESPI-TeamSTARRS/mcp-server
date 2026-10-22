@@ -15,8 +15,13 @@ bm25-mcp = "bm25_mcp.server:main"
 
 [dependency-groups]
 dev = [
+    "mypy>=2.4.0",
+    "pip-audit>=2.10.1",
     "poethepoet>=0.49.0",
+    "pre-commit>=4.7.0",
     "pytest>=8",
+    "pytest-cov>=7.1.0",
+    "ruff>=0.17.1",
 ]
 
 [build-system]
@@ -30,10 +35,42 @@ packages = ["src/bm25_mcp"]
 testpaths = ["tests"]
 pythonpath = ["src"]
 
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]
+# La longueur des lignes est laissee au formateur (les chaines longues restent telles quelles).
+ignore = ["E501"]
+
+[tool.coverage.run]
+source = ["src/bm25_mcp"]
+
+[tool.coverage.report]
+fail_under = 80
+
+[tool.mypy]
+python_version = "3.13"
+plugins = ["pydantic.mypy"]
+check_untyped_defs = true
+
+[[tool.mypy.overrides]]
+module = ["rank_bm25", "snowballstemmer"]
+ignore_missing_imports = true
+
+[tool.poe]
+verbosity = 0
+
 [tool.poe.tasks]
 test = { cmd = "pytest", help = "Run the test suite" }
 serve = { cmd = "bm25-mcp", help = "Start the BM25 MCP server (see .env)" }
-check = { sequence = ["test"], help = "Run every check (used by the pre-push hook)" }
+lint = { cmd = "ruff check src tests", help = "Lint the code" }
+format-check = { cmd = "ruff format --check src tests", help = "Check the formatting" }
+typecheck = { cmd = "mypy src", help = "Type-check the sources" }
+cov = { cmd = "pytest --cov --cov-report=term-missing --cov-report=xml", help = "Run the tests with coverage (fails under 80 %)" }
+audit = { shell = "uv export --frozen --no-dev --no-emit-project | uv run pip-audit --disable-pip --no-deps -r /dev/stdin", help = "Audit the runtime dependencies for known vulnerabilities" }
+check = { sequence = ["lint", "format-check", "typecheck", "cov"], help = "Run every check (lint, format, types, tests with coverage); used by the pre-push hook and the CI" }
 
 [tool.semantic_release]
 tag_format = "v{version}"

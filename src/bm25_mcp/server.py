@@ -27,7 +27,9 @@ def build_server(docs_path: Path, host: str = "0.0.0.0", port: int = 8001) -> Fa
         content of the best matching documents, most relevant first, as {path, text, score}.
         """
         bounded = max(1, min(limit, MAX_LIMIT))
-        logger.debug(message=f"Tool search_docs called (query={query!r}, limit={limit} -> {bounded})")
+        logger.debug(
+            message=f"Tool search_docs called (query={query!r}, limit={limit} -> {bounded})"
+        )
         hits = search.search(query, bounded)
         logger.debug(
             message=f"Tool search_docs returned {len(hits)} hit(s): "

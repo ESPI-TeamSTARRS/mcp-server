@@ -54,6 +54,7 @@ Les tâches sont lancées avec [Poe the Poet](https://poethepoet.natn.io/) via u
 |---|---|
 | `uv run poe test` | Lance la suite de tests (pytest) |
 | `uv run poe serve` | Démarre le serveur MCP BM25 (configuration via `.env`) |
-| `uv run poe check` | Enchaîne toutes les vérifications (aujourd'hui : `test`) ; appelée par le hook `pre-push` |
+| `uv run poe check` | Toutes les vérifications de la CI : ruff (lint + format), mypy, tests avec couverture ≥ 80 % ; appelée par le hook `pre-push` |
+| `uv run poe audit` | `pip-audit` sur les dépendances d'exécution |
 
-Les tâches `lint`, `typecheck`, `cov` ou `ingest` n'existent pas : le dépôt n'a ni ruff, ni mypy, ni pytest-cov, ni étape d'ingestion (l'index BM25 suit les fichiers sur disque). Ajoutez-les à `[tool.poe.tasks]` et à la séquence `check` le jour où l'outil est installé.
+Hooks Git : `uv run pre-commit install --hook-type pre-commit --hook-type commit-msg` (ruff, gitleaks, message de commit).

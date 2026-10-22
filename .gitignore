@@ -15,3 +15,7 @@ __pycache__/
 .env
 .env.prod
 documentations/actions-taken
+coverage.xml
+.coverage
+.ruff_cache/
+.mypy_cache/

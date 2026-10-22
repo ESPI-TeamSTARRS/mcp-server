@@ -12,13 +12,13 @@ def clear_env(monkeypatch):
 def test_defaults(monkeypatch):
     clear_env(monkeypatch)
     setting = Setting()
-    assert (setting.DEBUG, setting.DOCS_PATH, setting.HOST, setting.PORT, setting.MCP_TRANSPORT) == (
+    assert (
         False,
         Path("documentations"),
         "0.0.0.0",
         8001,
         "streamable-http",
-    )
+    ) == (setting.DEBUG, setting.DOCS_PATH, setting.HOST, setting.PORT, setting.MCP_TRANSPORT)
 
 
 def test_setting_reads_uppercase_environment_variables(monkeypatch):

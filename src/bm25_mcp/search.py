@@ -10,8 +10,43 @@ from bm25_mcp.logger import logger
 EXCLUDED_DIR = "actions-taken"
 EXTENSIONS = frozenset({".md", ".txt"})
 STOP_WORDS = frozenset(
-    "a an and are as at be but by for from has have if in into is it its of on or "
-    "that the their then there these they this to was were will with".split()
+    [
+        "a",
+        "an",
+        "and",
+        "are",
+        "as",
+        "at",
+        "be",
+        "but",
+        "by",
+        "for",
+        "from",
+        "has",
+        "have",
+        "if",
+        "in",
+        "into",
+        "is",
+        "it",
+        "its",
+        "of",
+        "on",
+        "or",
+        "that",
+        "the",
+        "their",
+        "then",
+        "there",
+        "these",
+        "they",
+        "this",
+        "to",
+        "was",
+        "were",
+        "will",
+        "with",
+    ]
 )
 
 
@@ -94,7 +129,9 @@ class Bm25DocSearch:
         scores = self._bm25.get_scores(query_tokens)
         matching = self._documents_sharing_a_word_with(query_tokens)
         best_first = sorted(matching, key=lambda index: scores[index], reverse=True)
-        logger.debug(message=f"{len(matching)} document(s) match, returning {min(len(matching), limit)}")
+        logger.debug(
+            message=f"{len(matching)} document(s) match, returning {min(len(matching), limit)}"
+        )
         return [self._to_hit(index, scores[index]) for index in best_first[:limit]]
 
     def _refresh_index(self) -> None:
